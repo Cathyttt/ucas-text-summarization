@@ -160,3 +160,44 @@ if __name__ == '__main__':
             except:
                 step = 0
                 test_text_abs(args, device_id, cp, step)
+
+    elif (args.task == 'neusum'):
+        if (args.mode == 'train'):
+            train_ext(args, device_id)
+        elif (args.mode == 'validate'):
+            validate_ext(args, device_id)
+        if (args.mode == 'test'):
+            cp = args.test_from
+            try:
+                step = int(cp.split('.')[-2].split('_')[-1])
+            except:
+                step = 0
+            test_ext(args, device_id, cp, step)
+        elif (args.mode == 'test_text'):
+            cp = args.test_from
+            try:
+                step = int(cp.split('.')[-2].split('_')[-1])
+            except:
+                step = 0
+                test_text_abs(args, device_id, cp, step)
+
+    elif (args.task == 'pointer'):
+        if (args.mode == 'train'):
+            train_ext(args, device_id)
+        elif (args.mode == 'validate'):
+            validate_ext(args, device_id)
+        if (args.mode == 'test'):
+            cp = args.test_from
+            try:
+                step = int(cp.split('.')[-2].split('_')[-1])
+            except:
+                step = 0
+            test_ext(args, device_id, cp, step)
+        elif (args.mode == 'test_text'):
+            cp = args.test_from
+            try:
+                step = int(cp.split('.')[-2].split('_')[-1])
+            except:
+                step = 0
+                test_text_abs(args, device_id, cp, step)
+
