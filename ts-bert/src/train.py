@@ -36,6 +36,8 @@ if __name__ == '__main__':
     parser.add_argument("-model_path", default='../models/')
     parser.add_argument("-result_path", default='../results/cnndm')
     parser.add_argument("-temp_dir", default='../temp')
+    parser.add_argument("-text_src", default='')
+    parser.add_argument("-text_tgt", default='')
 
     parser.add_argument("-batch_size", default=140, type=int)
     parser.add_argument("-test_batch_size", default=200, type=int)
@@ -136,12 +138,7 @@ if __name__ == '__main__':
                 step = 0
             test_abs(args, device_id, cp, step)
         elif (args.mode == 'test_text'):
-            cp = args.test_from
-            try:
-                step = int(cp.split('.')[-2].split('_')[-1])
-            except:
-                step = 0
-                test_text_abs(args, device_id, cp, step)
+            test_text_abs(args)
 
     elif (args.task == 'ext'):
         if (args.mode == 'train'):
@@ -156,12 +153,7 @@ if __name__ == '__main__':
                 step = 0
             test_ext(args, device_id, cp, step)
         elif (args.mode == 'test_text'):
-            cp = args.test_from
-            try:
-                step = int(cp.split('.')[-2].split('_')[-1])
-            except:
-                step = 0
-                test_text_abs(args, device_id, cp, step)
+            test_text_abs(args)
 
     elif (args.task == 'neusum'):
         if (args.mode == 'train'):
