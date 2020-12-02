@@ -9,6 +9,8 @@ import os
 from others.logging import init_logger
 from train_abstractive import validate_abs, train_abs, baseline, test_abs, test_text_abs
 from train_extractive import train_ext, validate_ext, test_ext
+from train_neu import train_neu, validate_neu, test_neu
+from train_pt import train_pt, validate_pt, test_pt
 
 model_flags = ['hidden_size', 'ff_size', 'heads', 'emb_size', 'enc_layers', 'enc_hidden_size', 'enc_ff_size',
                'dec_layers', 'dec_hidden_size', 'dec_ff_size', 'encoder', 'ff_actv', 'use_interval']
@@ -163,16 +165,16 @@ if __name__ == '__main__':
 
     elif (args.task == 'neusum'):
         if (args.mode == 'train'):
-            train_ext(args, device_id)
+            train_neu(args, device_id)
         elif (args.mode == 'validate'):
-            validate_ext(args, device_id)
+            validate_neu(args, device_id)
         if (args.mode == 'test'):
             cp = args.test_from
             try:
                 step = int(cp.split('.')[-2].split('_')[-1])
             except:
                 step = 0
-            test_ext(args, device_id, cp, step)
+            test_neu(args, device_id, cp, step)
         elif (args.mode == 'test_text'):
             cp = args.test_from
             try:
@@ -183,16 +185,16 @@ if __name__ == '__main__':
 
     elif (args.task == 'pointer'):
         if (args.mode == 'train'):
-            train_ext(args, device_id)
+            train_pt(args, device_id)
         elif (args.mode == 'validate'):
-            validate_ext(args, device_id)
+            validate_pt(args, device_id)
         if (args.mode == 'test'):
             cp = args.test_from
             try:
                 step = int(cp.split('.')[-2].split('_')[-1])
             except:
                 step = 0
-            test_ext(args, device_id, cp, step)
+            test_pt(args, device_id, cp, step)
         elif (args.mode == 'test_text'):
             cp = args.test_from
             try:
