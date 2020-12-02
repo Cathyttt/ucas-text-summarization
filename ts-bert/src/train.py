@@ -9,7 +9,7 @@ import os
 from others.logging import init_logger
 from train_abstractive import validate_abs, train_abs, baseline, test_abs, test_text_abs
 from train_extractive import train_ext, validate_ext, test_ext
-from train_neu import train_neu, validate_neu, test_neu
+from train_neusum import train_neu, validate_neu, test_neu
 from train_pt import train_pt, validate_pt, test_pt
 
 model_flags = ['hidden_size', 'ff_size', 'heads', 'emb_size', 'enc_layers', 'enc_hidden_size', 'enc_ff_size',
