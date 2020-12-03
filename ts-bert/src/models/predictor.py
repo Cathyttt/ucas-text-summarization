@@ -15,7 +15,6 @@ from translate.beam import GNMTGlobalScorer
 
 def build_predictor(args, tokenizer, symbols, model, logger=None):
     scorer = GNMTGlobalScorer(args.alpha,length_penalty='wu')
-
     translator = Translator(args, model, tokenizer, symbols, global_scorer=scorer, logger=logger)
     return translator
 

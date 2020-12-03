@@ -139,6 +139,7 @@ class BertTokenizer(object):
             vocab_file = os.path.join(vocab_file, VOCAB_NAME)
         # redirect to the cache, if necessary
         try:
+            cache_dir = '../temp'
             resolved_vocab_file = cached_path(vocab_file, cache_dir=cache_dir)
         except EnvironmentError:
             logger.error(
