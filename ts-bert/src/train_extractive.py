@@ -15,7 +15,7 @@ import torch
 
 import distributed
 from models import data_loader, model_builder
-from models.data_loader import load_dataset
+from models.data_loader import load_dataset, load_text
 from models.model_builder import ExtSummarizer
 from models.trainer_ext import build_trainer
 from others.logging import logger, init_logger
@@ -252,6 +252,7 @@ def test_text_ext(args, device_id, pt, step):
         test_from = args.test_from
     logger.info('Loading checkpoint from %s' % test_from)
     checkpoint = torch.load(test_from, map_location=lambda storage, loc: storage)
+    opt = vars(checkpoint['opt'])
     for k in opt.keys():
         if (k in model_flags):
             setattr(args, k, opt[k])
