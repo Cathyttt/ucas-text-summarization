@@ -8,7 +8,7 @@ import argparse
 import os
 from others.logging import init_logger
 from train_abstractive import validate_abs, train_abs, baseline, test_abs, test_text_abs
-from train_extractive import train_ext, validate_ext, test_ext
+from train_extractive import train_ext, validate_ext, test_ext, test_text_ext
 from train_neusum import train_neu, validate_neu, test_neu
 from train_pt import train_pt, validate_pt, test_pt
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-task", default='ext', type=str, choices=['ext', 'abs'])
     parser.add_argument("-encoder", default='bert', type=str, choices=['bert', 'baseline'])
-    parser.add_argument("-mode", default='text_text', type=str, choices=['train', 'validate', 'test','text_text'])
+    parser.add_argument("-mode", default='train', type=str, choices=['train', 'validate', 'test','test_text'])
     parser.add_argument("-bert_data_path", default='../bert_data_new/cnndm')
     parser.add_argument("-model_path", default='../models/')
     parser.add_argument("-result_path", default='../results/cnndm')
@@ -136,7 +136,7 @@ if __name__ == '__main__':
             except:
                 step = 0
             test_abs(args, device_id, cp, step)
-        elif (args.mode == 'text_text'):
+        elif (args.mode == 'test_text'):
             test_text_abs(args)
 
     elif (args.task == 'ext'):
@@ -152,7 +152,12 @@ if __name__ == '__main__':
                 step = 0
             test_ext(args, device_id, cp, step)
         elif (args.mode == 'test_text'):
-            test_text_abs(args)
+            cp = args.test_from
+            try:
+                step = int(cp.split('.')[-2].split('_')[-1])
+            except:
+                step = 0
+            test_text_ext(args, device_id, cp, step)
 
     elif (args.task == 'neusum'):
         if (args.mode == 'train'):
