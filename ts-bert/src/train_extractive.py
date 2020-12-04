@@ -283,7 +283,7 @@ def text_ext(args, device_id, pt, step):
     model = ExtSummarizer(args, device, checkpoint)
     model.eval()
 
-    test_iter = data_loader.load_text(args, args.text_src, args.text_tgt, device)
+    test_iter = data_loader.load_one_text(args, args.text_src, args.text_tgt, device)
 
     trainer = build_trainer(args, device_id, model, None)
     trainer.test_text(test_iter, -1)

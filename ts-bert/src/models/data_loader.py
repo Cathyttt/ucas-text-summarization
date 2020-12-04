@@ -488,7 +488,7 @@ def load_one_text(args, source, target, device):
 
     if(target==''):
         for x in tqdm(source, total=n_lines):
-            src, mask_src, segments_ids, clss, mask_cls = _process_src(x)
+            src2, mask_src2, segments_ids2, clss2, mask_cls2 = _process_src(z)
             segs = torch.tensor(segments_ids)[None, :].to(device)
             batch = Batch()
             batch.src = src

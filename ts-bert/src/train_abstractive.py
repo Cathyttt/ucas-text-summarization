@@ -369,7 +369,7 @@ def text_abs(args):
     model = AbsSummarizer(args, device, checkpoint)
     model.eval()
 
-    test_iter = data_loader.load_text(args, args.text_src, args.text_tgt, device)
+    test_iter = data_loader.load_one_text(args, args.text_src, args.text_tgt, device)
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True, cache_dir=args.temp_dir)
     symbols = {'BOS': tokenizer.vocab['[unused0]'], 'EOS': tokenizer.vocab['[unused1]'],
                'PAD': tokenizer.vocab['[PAD]'], 'EOQ': tokenizer.vocab['[unused2]']}
