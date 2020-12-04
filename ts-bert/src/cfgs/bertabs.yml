@@ -1,5 +1,5 @@
 task: abs
-mode: text_text
+mode: test_text
 text_src: '../raw_data/temp.raw_src'
 text_tgt: '../raw_data/temp.raw_tgt'
 test_from: '../models/model_step_148000.pt'
@@ -10,9 +10,9 @@ log_file: '../logs/val_abs_bert_cnndm_test'
 model_path: '../models'
 sep_optim: true
 use_interval: true
-visible_gpus: 1
+visible_gpus: '1'
 max_pos: 512
 max_length: 200
 alpha: 0.95
 min_length: 50
-result_path: '../logs/abs_bert_cnndm_test'
+result_path: '../results/abs_bert_cnndm_test'

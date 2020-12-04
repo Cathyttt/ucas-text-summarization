@@ -5,7 +5,7 @@ bert_data_path: '../bert_data/bert_data_cnndm_final/cnndm'
 ext_dropout: 0.1
 model_path: '../models'
 lr: 2e-3
-visible_gpus: 1
+visible_gpus: '1'
 report_every: 50
 save_checkpoint_steps: 1000
 batch_size: 3000
