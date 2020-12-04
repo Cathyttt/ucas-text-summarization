@@ -487,39 +487,40 @@ def load_one_text(args, source, target, device):
         return src, mask_src, segments_ids, clss, mask_cls
 
     if(target==''):
-        for x in tqdm(source, total=n_lines):
-            src2, mask_src2, segments_ids2, clss2, mask_cls2 = _process_src(z)
-            segs = torch.tensor(segments_ids)[None, :].to(device)
-            batch = Batch()
-            batch.src = src
-            batch.tgt = None
-            batch.mask_src = mask_src
-            batch.mask_tgt = None
-            batch.segs = segs
-            batch.src_str = [[sent.replace('[SEP]', '').strip() for sent in x.split('[CLS]')]]
-            batch.tgt_str = ['']
-            batch.clss = clss
-            batch.mask_cls = mask_cls
+        x = source
+        src, mask_src, segments_ids, clss, mask_cls = _process_src(x)
+        segs = torch.tensor(segments_ids)[None, :].to(device)
+        batch = Batch()
+        batch.src = src
+        batch.tgt = None
+        batch.mask_src = mask_src
+        batch.mask_tgt = None
+        batch.segs = segs
+        batch.src_str = [[sent.replace('[SEP]', '').strip() for sent in x.split('[CLS]')]]
+        batch.tgt_str = ['']
+        batch.clss = clss
+        batch.mask_cls = mask_cls
 
-            batch.batch_size = 1
-            yield batch
+        batch.batch_size = 1
+        yield batch
     else:
-        for x, y in tqdm(zip(source, target), total=n_lines):
-            x = x.strip()
-            y = y.strip()
-            y = ' '.join(y.split())
-            src, mask_src, segments_ids, clss, mask_cls = _process_src(x)
-            segs = torch.tensor(segments_ids)[None, :].to(device)
-            batch = Batch()
-            batch.src = src
-            batch.tgt = None
-            batch.mask_src = mask_src
-            batch.mask_tgt = None
-            batch.segs = segs
-            batch.src_str = [[sent.replace('[SEP]', '').strip() for sent in x.split('[CLS]')]]
-            batch.tgt_str = [y]
-            batch.clss = clss
-            batch.mask_cls = mask_cls
-            batch.batch_size = 1
-            yield batch
+        x = source
+        y = target
+        x = x.strip()
+        y = y.strip()
+        y = ' '.join(y.split())
+        src, mask_src, segments_ids, clss, mask_cls = _process_src(x)
+        segs = torch.tensor(segments_ids)[None, :].to(device)
+        batch = Batch()
+        batch.src = src
+        batch.tgt = None
+        batch.mask_src = mask_src
+        batch.mask_tgt = None
+        batch.segs = segs
+        batch.src_str = [[sent.replace('[SEP]', '').strip() for sent in x.split('[CLS]')]]
+        batch.tgt_str = [y]
+        batch.clss = clss
+        batch.mask_cls = mask_cls
+        batch.batch_size = 1
+        yield batch
 
