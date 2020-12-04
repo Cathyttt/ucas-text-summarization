@@ -293,6 +293,89 @@ class Trainer(object):
 
         return stats
 
+    def test_text(self, test_iter, step, cal_lead=False, cal_oracle=False):
+        """ Validate model.
+            valid_iter: validate data iterator
+        Returns:
+            :obj:`nmt.Statistics`: validation loss statistics
+        """
+
+        # Set model in validating mode.
+        def _get_ngrams(n, text):
+            ngram_set = set()
+            text_length = len(text)
+            max_index_ngram_start = text_length - n
+            for i in range(max_index_ngram_start + 1):
+                ngram_set.add(tuple(text[i:i + n]))
+            return ngram_set
+
+        def _block_tri(c, p):
+            tri_c = _get_ngrams(3, c.split())
+            for s in p:
+                tri_s = _get_ngrams(3, s.split())
+                if len(tri_c.intersection(tri_s)) > 0:
+                    return True
+            return False
+
+        if (not cal_lead and not cal_oracle):
+            self.model.eval()
+
+        can_path = '%s_step%d.candidate' % (self.args.result_path, step)
+        gold_path = '%s_step%d.gold' % (self.args.result_path, step)
+        with open(can_path, 'w') as save_pred:
+            with open(gold_path, 'w') as save_gold:
+                with torch.no_grad():
+                    for batch in test_iter:
+                        src = batch.src
+                        segs = batch.segs
+                        clss = batch.clss
+                        mask = batch.mask_src
+                        mask_cls = batch.mask_cls
+
+                        gold = []
+                        pred = []
+
+                        if (cal_lead):
+                            selected_ids = [list(range(batch.clss.size(1)))] * batch.batch_size
+                        else:
+                            sent_scores, mask = self.model(src, segs, clss, mask, mask_cls)
+
+                            sent_scores = sent_scores + mask.float()
+                            sent_scores = sent_scores.cpu().data.numpy()
+                            selected_ids = np.argsort(-sent_scores, 1)
+                        # selected_ids = np.sort(selected_ids,1)
+                        for i, idx in enumerate(selected_ids):
+                            _pred = []
+                            if (len(batch.src_str[i]) == 0):
+                                continue
+                            for j in selected_ids[i][:len(batch.src_str[i])]:
+                                if (j >= len(batch.src_str[i])):
+                                    continue
+                                candidate = batch.src_str[i][j].strip()
+                                if (self.args.block_trigram):
+                                    if (not _block_tri(candidate, _pred)):
+                                        _pred.append(candidate)
+                                else:
+                                    _pred.append(candidate)
+
+                                if ((not cal_oracle) and (not self.args.recall_eval) and len(_pred) == 3):
+                                    break
+
+                            _pred = '<q>'.join(_pred)
+                            if (self.args.recall_eval):
+                                _pred = ' '.join(_pred.split()[:len(batch.tgt_str[i].split())])
+
+                            pred.append(_pred)
+                            gold.append(batch.tgt_str[i])
+
+                        for i in range(len(gold)):
+                            save_gold.write(gold[i].strip() + '\n')
+                        for i in range(len(pred)):
+                            save_pred.write(pred[i].strip() + '\n')
+        if (step != -1 and self.args.report_rouge):
+            rouges = test_rouge(self.args.temp_dir, can_path, gold_path)
+            logger.info('Rouges at step %d \n%s' % (step, rouge_results_to_str(rouges)))
+
     def _gradient_accumulation(self, true_batchs, normalization, total_stats,
                                report_stats):
         if self.grad_accum_count > 1:

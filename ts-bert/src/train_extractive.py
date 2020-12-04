@@ -264,4 +264,4 @@ def test_text_ext(args, device_id, pt, step):
     test_iter = data_loader.load_text(args, args.text_src, args.text_tgt, device)
 
     trainer = build_trainer(args, device_id, model, None)
-    trainer.test(test_iter, -1)
+    trainer.test_text(test_iter, -1)
