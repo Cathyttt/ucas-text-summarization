@@ -15,9 +15,9 @@ import torch
 
 import distributed
 from models import data_loader, model_builder
-from models.data_loader import load_dataset, load_text
+from models.data_loader import load_dataset, load_text, load_one_text
 from models.model_builder import ExtSummarizer
-from models.trainer_ext import build_trainer
+from models.trainer_ext import build_trainer_ext
 from others.logging import logger, init_logger
 
 model_flags = ['hidden_size', 'ff_size', 'heads', 'inter_layers', 'encoder', 'ff_actv', 'use_interval', 'rnn_size']
@@ -168,7 +168,7 @@ def validate(args, device_id, pt, step):
     valid_iter = data_loader.Dataloader(args, load_dataset(args, 'valid', shuffle=False),
                                         args.batch_size, device,
                                         shuffle=False, is_test=False)
-    trainer = build_trainer(args, device_id, model, None)
+    trainer = build_trainer_ext(args, device_id, model, None)
     stats = trainer.validate(valid_iter, step)
     return stats.xent()
 
@@ -193,7 +193,7 @@ def test_ext(args, device_id, pt, step):
     test_iter = data_loader.Dataloader(args, load_dataset(args, 'test', shuffle=False),
                                        args.test_batch_size, device,
                                        shuffle=False, is_test=True)
-    trainer = build_trainer(args, device_id, model, None)
+    trainer = build_trainer_ext(args, device_id, model, None)
     trainer.test(test_iter, step)
 
 def train_ext(args, device_id):
@@ -241,7 +241,7 @@ def train_single_ext(args, device_id):
 
     logger.info(model)
 
-    trainer = build_trainer(args, device_id, model, optim)
+    trainer = build_trainer_ext(args, device_id, model, optim)
     trainer.train(train_iter_fct, args.train_steps)
 
 def test_text_ext(args, device_id, pt, step):
@@ -263,7 +263,7 @@ def test_text_ext(args, device_id, pt, step):
 
     test_iter = data_loader.load_text(args, args.text_src_path, args.text_tgt_path, device)
 
-    trainer = build_trainer(args, device_id, model, None)
+    trainer = build_trainer_ext(args, device_id, model, None)
     trainer.test_text(test_iter, -1)
 
 def text_ext(args, device_id, pt, step):
@@ -285,5 +285,5 @@ def text_ext(args, device_id, pt, step):
 
     test_iter = data_loader.load_one_text(args, args.text_src, args.text_tgt, device)
 
-    trainer = build_trainer(args, device_id, model, None)
+    trainer = build_trainer_ext(args, device_id, model, None)
     trainer.test_text(test_iter, -1)

@@ -191,6 +191,51 @@ class Translator(object):
                 self.tensorboard_writer.add_scalar('test/rouge2-F', rouges['rouge_2_f_score'], step)
                 self.tensorboard_writer.add_scalar('test/rougeL-F', rouges['rouge_l_f_score'], step)
 
+    def translate_text(self,
+                  data_iter, step,
+                  attn_debug=False):
+
+        self.model.eval()
+        pred_results, gold_results = [], []
+        with torch.no_grad():
+            for batch in data_iter:
+                if(self.args.recall_eval):
+                    gold_tgt_len = batch.tgt.size(1)
+                    self.min_length = gold_tgt_len + 20
+                    self.max_length = gold_tgt_len + 60
+                batch_data = self.translate_batch(batch)
+                translations = self.from_batch(batch_data)
+
+                for trans in translations:
+                    pred, gold, src = trans
+                    pred_str = pred.replace('[unused0]', '').replace('[unused3]', '').replace('[PAD]', '').replace('[unused1]', '').replace(r' +', ' ').replace(' [unused2] ', '<q>').replace('[unused2]', '').strip()
+                    gold_str = gold.strip()
+                    if(self.args.recall_eval):
+                        _pred_str = ''
+                        gap = 1e3
+                        for sent in pred_str.split('<q>'):
+                            can_pred_str = _pred_str + ' ' +sent.strip()
+                            can_gap = math.fabs(len(_pred_str.split())-len(gold_str.split()))
+                            # if(can_gap>=gap):
+                            if(len(can_pred_str.split())>=len(gold_str.split())+10):
+                                pred_str = _pred_str
+                                break
+                            else:
+                                gap = can_gap
+                                _pred_str = can_pred_str
+
+                    pred_results.append(pred_str)
+
+
+
+                        # pred_str = ' '.join(pred_str.split()[:len(gold_str.split())])
+                    # self.raw_can_out_file.write(' '.join(pred).strip() + '\n')
+                    # self.raw_gold_out_file.write(' '.join(gold).strip() + '\n')
+        pred_res = ' '.join(pred_results)
+        print(pred_res)
+
+        return pred_res
+
     def _report_rouge(self, gold_path, can_path):
         self.logger.info("Calculating Rouge")
         results_dict = test_rouge(self.args.temp_dir, can_path, gold_path)
