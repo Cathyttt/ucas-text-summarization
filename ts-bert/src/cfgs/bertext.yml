@@ -16,5 +16,5 @@ use_interval: true
 warmup_steps: 10000
 max_pos: 512
 result_path: '../results/ext_bert_cnndm'
-text_src: '../raw_data/temp_ext.raw_src'
-text_tgt: '../raw_data/temp.raw_tgt'
+text_src_path: '../raw_data/temp_ext.raw_src'
+text_tgt_path: '../raw_data/temp.raw_tgt'

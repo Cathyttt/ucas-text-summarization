@@ -347,6 +347,28 @@ def test_text_abs(args):
     model = AbsSummarizer(args, device, checkpoint)
     model.eval()
 
+    test_iter = data_loader.load_text(args, args.text_src_path, args.text_tgt_path, device)
+    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True, cache_dir=args.temp_dir)
+    symbols = {'BOS': tokenizer.vocab['[unused0]'], 'EOS': tokenizer.vocab['[unused1]'],
+               'PAD': tokenizer.vocab['[PAD]'], 'EOQ': tokenizer.vocab['[unused2]']}
+    predictor = build_predictor(args, tokenizer, symbols, model, logger)
+    predictor.translate(test_iter, -1)
+
+def text_abs(args):
+
+    logger.info('Loading checkpoint from %s' % args.test_from)
+    device = "cpu" if args.visible_gpus == '-1' else "cuda"
+
+    checkpoint = torch.load(args.test_from, map_location=lambda storage, loc: storage)
+    opt = vars(checkpoint['opt'])
+    for k in opt.keys():
+        if (k in model_flags):
+            setattr(args, k, opt[k])
+    print(args)
+
+    model = AbsSummarizer(args, device, checkpoint)
+    model.eval()
+
     test_iter = data_loader.load_text(args, args.text_src, args.text_tgt, device)
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True, cache_dir=args.temp_dir)
     symbols = {'BOS': tokenizer.vocab['[unused0]'], 'EOS': tokenizer.vocab['[unused1]'],
