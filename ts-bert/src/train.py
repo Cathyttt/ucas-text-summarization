@@ -24,7 +24,12 @@ def str2bool(v):
     else:
         raise argparse.ArgumentTypeError('Boolean value expected.')
 
-
+def update_values(dict_from, dict_to):
+    for key, value in dict_from.items():
+        if isinstance(value, dict):
+            update_values(dict_from[key], dict_to[key])
+        elif value is not None:
+            dict_to[key] = dict_from[key]
 
 
 if __name__ == '__main__':
@@ -38,6 +43,7 @@ if __name__ == '__main__':
     parser.add_argument("-temp_dir", default='../temp')
     parser.add_argument("-text_src", default='')
     parser.add_argument("-text_tgt", default='')
+    parser.add_argument("-cfgs_path", default='')
 
     parser.add_argument("-batch_size", default=140, type=int)
     parser.add_argument("-test_batch_size", default=200, type=int)
@@ -113,6 +119,12 @@ if __name__ == '__main__':
     parser.add_argument("-block_trigram", type=str2bool, nargs='?', const=True, default=True)
 
     args = parser.parse_args()
+
+    if args.cfgs_path is not None:
+        with open(args.cfgs_path, 'r') as handle:
+            options_yaml = yaml.load(handle)
+        update_values(options_yaml, vars(args))
+
     args.gpu_ranks = [int(i) for i in range(len(args.visible_gpus.split(',')))]
     args.world_size = len(args.gpu_ranks)
     os.environ["CUDA_VISIBLE_DEVICES"] = args.visible_gpus
