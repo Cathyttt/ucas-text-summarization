@@ -445,7 +445,6 @@ class Trainer(object):
 
                 pred.append(_pred)
                 gold.append(batch.tgt_str[i])
-
             pred = ' '.join(pred)
             print(pred)
 

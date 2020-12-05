@@ -12,6 +12,7 @@ from ts_bert.src.models.model_builder import ExtSummarizer, AbsSummarizer
 from ts_bert.src.models import data_loader
 from ts_bert.src.models.trainer_ext import build_trainer_ext
 from ts_bert.src.models.predictor import build_predictor
+from ts_bert.src.models.trainer import build_trainer
 
 use_gpu = True
 
