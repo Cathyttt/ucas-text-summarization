@@ -13,7 +13,7 @@ from ts_bert.src.models import data_loader
 from ts_bert.src.models.trainer_ext import build_trainer_ext
 from ts_bert.src.models.predictor import build_predictor
 
-use_gpu = True
+use_gpu = False
 
 ns_model=None
 be_trainer=None
@@ -32,7 +32,8 @@ def load_model():
 
     be_args = parse_opt('ts_bert/src/cfgs/bertext_onetext.yml')
     ba_args = parse_opt('ts_bert/src/cfgs/bertabs_onetext.yml')
-    device = "cpu" if be_args.visible_gpus == '-1' else "cuda"
+    # device = "cpu" if be_args.visible_gpus == '-1' else "cuda"
+    device = "cpu"
     device_id = 0 if device == "cuda" else -1
 
     be_checkpoint = torch.load(be_args.test_from, map_location=lambda storage, loc: storage)
@@ -112,15 +113,10 @@ def bepredict():
         plaintext = request.args.get('text')
         try:
             # print(plaintext)
-            # plaintext = preprocess_text_ext(plaintext)
 
-            # summary= bertext_predict(plaintext)
-            if use_gpu == True:
-                device = "cuda"
-            else:
-                device = "cpu"
-            test_iter = data_loader.load_one_text_web(plaintext, device)
-            summary = ba_predictor.translate_text(test_iter, -1)
+            plaintext = preprocess_text_ext(plaintext)
+
+            summary= bertext_predict(plaintext)
 
             return jsonify({'status_code': 1, 'summary_content': summary})
 
@@ -148,13 +144,8 @@ def bapredict():
         plaintext = request.args.get('text')
         try:
             ## 待修改
-            # summary= bertabs_predict(plaintext)
-            if use_gpu == True:
-                device = "cuda"
-            else:
-                device = "cpu"
-            test_iter = data_loader.load_one_text_web(plaintext, device)
-            summary = ba_predictor.translate_text(test_iter, -1)
+            summary= bertabs_predict(plaintext)
+
             return jsonify({'status_code': 1, 'summary_content': summary})
 
         except TimeoutError as err:
@@ -171,5 +162,6 @@ if __name__ == '__main__':
     app.debug = True
     app.jinja_env.auto_reload = True
     #app.run()
+    load_model()
     app.run(host="0.0.0.0")
 
