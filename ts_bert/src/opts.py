@@ -16,7 +16,7 @@ def update_values(dict_from, dict_to):
         elif value is not None:
             dict_to[key] = dict_from[key]
 
-def parse_opt():
+def parse_opt(cfgs_path):
     parser = argparse.ArgumentParser()
     parser.add_argument("-task", default='ext', type=str, choices=['ext', 'abs'])
     parser.add_argument("-encoder", default='bert', type=str, choices=['bert', 'baseline'])
@@ -106,8 +106,8 @@ def parse_opt():
 
     args = parser.parse_args()
 
-    if args.cfgs_path is not None:
-        with open(args.cfgs_path, 'r') as handle:
+    if cfgs_path is not None:
+        with open(cfgs_path, 'r') as handle:
             options_yaml = yaml.load(handle)
         update_values(options_yaml, vars(args))
 
