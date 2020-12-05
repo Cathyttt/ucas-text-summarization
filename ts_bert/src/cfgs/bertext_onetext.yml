@@ -1,6 +1,7 @@
 task: ext
 test_from: 'ts_bert/models/bertext_cnndm_transformer.pt'
 mode: one_text
+temp_dir: '../temp'
 text_src: "this Terry Jones had a love of the absurd that contributed much to the anarchic humour of Monty Python's Flying Circus. [CLS] [SEP] His style of visual comedy, leavened with a touch of the surreal, inspired many comedians who followed him. [CLS] [SEP] It was on Python that he honed his directing skills, notably on Life of Brian and The Meaning of Life. [CLS] [SEP] A keen historian, he wrote a number of books and fronted TV documentaries on ancient and medieval history. [CLS] [SEP] Terence Graham Parry Jones was born in Colwyn Bay in north Wales on 1 February 1942. [CLS] [SEP] His grandparents ran the local amateur operatic society and staged Gilbert and Sullivan concerts on the town's pier each year His family moved to Surrey when he was four but he always felt nostalgic about his native land. [CLS] [SEP] \"I couldn't bear it and for the longest time I wanted Wales back,\" he once said. [CLS] [SEP] \"I still feel very Welsh and feel it's where I should be really.\" After leaving the Royal Grammar School in Guildford, where he captained the school, he went on to read English at St Edmund Hall, Oxford. [CLS] [SEP] However, as he put it, he \"strayed into history\", the subject in which he graduated. [CLS] [SEP] While at Oxford he wrote sketches for the Oxford Revue and performed alongside a fellow student, Michael Palin."
 bert_data_path: '../bert_data/bert_data_cnndm_final/cnndm'
 ext_dropout: 0.1

@@ -551,7 +551,7 @@ class TestTranslator(object):
                                 gap = can_gap
                                 _pred_str = can_pred_str
 
-                    pred_str = pred_str.replace('<q>',' ')
+                    pred_str = pred_str.replace('<q>','. ')
                     pred_results.append(pred_str)
                         # pred_str = ' '.join(pred_str.split()[:len(gold_str.split())])
                     # self.raw_can_out_file.write(' '.join(pred).strip() + '\n')

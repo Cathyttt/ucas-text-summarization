@@ -44,7 +44,7 @@ def load_model():
     ba_model = AbsSummarizer(ba_args, device, ba_checkpoint)
     ba_model.eval()
 
-    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True, cache_dir=ba_args.temp_dir)
+    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', cache_dir=ba_args.temp_dir, do_lower_case=True)
     symbols = {'BOS': tokenizer.vocab['[unused0]'], 'EOS': tokenizer.vocab['[unused1]'],
                'PAD': tokenizer.vocab['[PAD]'], 'EOQ': tokenizer.vocab['[unused2]']}
     ba_predictor = test_predictor(ba_args, tokenizer, symbols, ba_model)
