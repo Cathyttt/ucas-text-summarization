@@ -10,9 +10,8 @@ sys.path.append('ts_bert/src/')
 from ts_bert.src.opts import parse_opt
 from ts_bert.src.models.model_builder import ExtSummarizer, AbsSummarizer
 from ts_bert.src.models import data_loader
-from ts_bert.src.models.trainer_ext import build_trainer_ext
-from ts_bert.src.models.predictor import build_predictor
-from ts_bert.src.models.trainer import build_trainer
+from ts_bert.src.models.trainer_ext import test_trainer_ext
+from ts_bert.src.models.predictor import test_predictor
 
 use_gpu = True
 
@@ -39,7 +38,7 @@ def load_model():
     be_model = ExtSummarizer(be_args, device, be_checkpoint)
     be_model.eval()
 
-    be_trainer = build_trainer_ext(be_args, device_id, be_model, None)
+    be_trainer = test_trainer_ext(be_args, device_id, be_model, None)
 
     ba_checkpoint = torch.load(ba_args.test_from, map_location=lambda storage, loc: storage)
     ba_model = AbsSummarizer(ba_args, device, ba_checkpoint)
@@ -48,7 +47,7 @@ def load_model():
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True, cache_dir=ba_args.temp_dir)
     symbols = {'BOS': tokenizer.vocab['[unused0]'], 'EOS': tokenizer.vocab['[unused1]'],
                'PAD': tokenizer.vocab['[PAD]'], 'EOQ': tokenizer.vocab['[unused2]']}
-    ba_predictor = build_predictor(ba_args, tokenizer, symbols, ba_model)
+    ba_predictor = test_predictor(ba_args, tokenizer, symbols, ba_model)
 
 
 

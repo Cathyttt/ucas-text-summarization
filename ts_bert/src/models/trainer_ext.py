@@ -55,6 +55,39 @@ def build_trainer_ext(args, device_id, model, optim):
 
     return trainer
 
+def test_trainer_ext(args, device_id, model, optim):
+    """
+    Simplify `Trainer` creation based on user `opt`s*
+    Args:
+        opt (:obj:`Namespace`): user options (usually from argument parsing)
+        model (:obj:`onmt.models.NMTModel`): the model to train
+        fields (dict): dict of fields
+        optim (:obj:`onmt.utils.Optimizer`): optimizer used during training
+        data_type (str): string describing the type of data
+            e.g. "text", "img", "audio"
+        model_saver(:obj:`onmt.models.ModelSaverBase`): the utility object
+            used to save the model
+    """
+
+    grad_accum_count = args.accum_count
+    n_gpu = args.world_size
+
+    if device_id >= 0:
+        gpu_rank = int(args.gpu_ranks[device_id])
+    else:
+        gpu_rank = 0
+        n_gpu = 0
+
+    print('gpu_rank %d' % gpu_rank)
+
+    trainer = Trainer(args, model, optim, grad_accum_count, n_gpu, gpu_rank)
+
+    # print(tr)
+    if (model):
+        n_params = _tally_parameters(model)
+        logger.info('* number of parameters: %d' % n_params)
+
+    return trainer
 
 class Trainer(object):
     """
