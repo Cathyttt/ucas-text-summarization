@@ -13,7 +13,7 @@ from ts_bert.src.models import data_loader
 from ts_bert.src.models.trainer_ext import build_trainer_ext
 from ts_bert.src.models.predictor import build_predictor
 
-use_gpu = False
+use_gpu = True
 
 ns_model=None
 be_trainer=None
@@ -32,8 +32,7 @@ def load_model():
 
     be_args = parse_opt('ts_bert/src/cfgs/bertext_onetext.yml')
     ba_args = parse_opt('ts_bert/src/cfgs/bertabs_onetext.yml')
-    # device = "cpu" if be_args.visible_gpus == '-1' else "cuda"
-    device = "cpu"
+    device = "cpu" if be_args.visible_gpus == '-1' else "cuda"
     device_id = 0 if device == "cuda" else -1
 
     be_checkpoint = torch.load(be_args.test_from, map_location=lambda storage, loc: storage)

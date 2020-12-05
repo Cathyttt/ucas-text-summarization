@@ -376,7 +376,7 @@ class Trainer(object):
             rouges = test_rouge(self.args.temp_dir, can_path, gold_path)
             logger.info('Rouges at step %d \n%s' % (step, rouge_results_to_str(rouges)))
 
-    def predice_text(self, test_iter, step, cal_lead=False, cal_oracle=False):
+    def predict_text(self, test_iter, step, cal_lead=False, cal_oracle=False):
         """ Validate model.
             valid_iter: validate data iterator
         Returns:

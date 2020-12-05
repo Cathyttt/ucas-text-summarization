@@ -224,6 +224,7 @@ class Translator(object):
                                 gap = can_gap
                                 _pred_str = can_pred_str
 
+                    pred_str = pred_str.replace('<q>',' ')
                     pred_results.append(pred_str)
 
 
@@ -231,7 +232,7 @@ class Translator(object):
                         # pred_str = ' '.join(pred_str.split()[:len(gold_str.split())])
                     # self.raw_can_out_file.write(' '.join(pred).strip() + '\n')
                     # self.raw_gold_out_file.write(' '.join(gold).strip() + '\n')
-        pred_res = ' '.join(pred_results)
+        pred_res = '\n'.join(pred_results)
         print(pred_res)
 
         return pred_res
