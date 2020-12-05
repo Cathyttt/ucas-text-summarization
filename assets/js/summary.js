@@ -1,7 +1,7 @@
 var app = new Vue({
 	el:"#app",
 	data: {
-		message:"请输入文本"
+		message:""
 	},
 
     methods:{
