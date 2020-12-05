@@ -114,7 +114,13 @@ def bepredict():
             # print(plaintext)
             # plaintext = preprocess_text_ext(plaintext)
 
-            summary= bertext_predict(plaintext)
+            # summary= bertext_predict(plaintext)
+            if use_gpu == True:
+                device = "cuda"
+            else:
+                device = "cpu"
+            test_iter = data_loader.load_one_text_web(plaintext, device)
+            summary = ba_predictor.translate_text(test_iter, -1)
 
             return jsonify({'status_code': 1, 'summary_content': summary})
 
@@ -142,7 +148,13 @@ def bapredict():
         plaintext = request.args.get('text')
         try:
             ## 待修改
-            summary= bertabs_predict(plaintext)
+            # summary= bertabs_predict(plaintext)
+            if use_gpu == True:
+                device = "cuda"
+            else:
+                device = "cpu"
+            test_iter = data_loader.load_one_text_web(plaintext, device)
+            summary = ba_predictor.translate_text(test_iter, -1)
             return jsonify({'status_code': 1, 'summary_content': summary})
 
         except TimeoutError as err:
