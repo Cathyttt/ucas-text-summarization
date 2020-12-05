@@ -5,6 +5,8 @@ import nltk
 import torch
 import torch.nn.functional as F
 from pytorch_transformers import BertTokenizer
+import sys
+sys.path.append('ts_bert/src/')
 from ts_bert.src.opts import parse_opt
 from ts_bert.src.models.model_builder import ExtSummarizer, AbsSummarizer
 from ts_bert.src.models import data_loader
@@ -109,7 +111,8 @@ def bepredict():
     if request.method == 'POST':
         plaintext = request.args.get('text')
         try:
-            plaintext = preprocess_text_ext(plaintext)
+            # print(plaintext)
+            # plaintext = preprocess_text_ext(plaintext)
 
             summary= bertext_predict(plaintext)
 
@@ -139,7 +142,7 @@ def bapredict():
         plaintext = request.args.get('text')
         try:
             ## 待修改
-            summary= bertabs_predict(plaintext, ba_model)
+            summary= bertabs_predict(plaintext)
             return jsonify({'status_code': 1, 'summary_content': summary})
 
         except TimeoutError as err:
@@ -155,6 +158,6 @@ def index():
 if __name__ == '__main__':
     app.debug = True
     app.jinja_env.auto_reload = True
-    app.run()
-    # app.run(host="0.0.0.0")
+    #app.run()
+    app.run(host="0.0.0.0")
 
