@@ -15,18 +15,14 @@ from ts_bert.src.models.predictor import test_predictor
 
 use_gpu = True
 
-ns_model=None
 be_trainer=None
-pn_model=None
 ba_predictor=None
 
 
 def load_model():
     """Load the pre-trained model, you can use your model just as easily.
     """
-    global ns_model
     global be_trainer
-    global pn_model
     global ba_predictor
 
     be_args = parse_opt('ts_bert/src/cfgs/bertext_onetext.yml')
@@ -60,9 +56,6 @@ def preprocess_text_ext(text):
 
 
 
-def neusum_predict(text):
-    return "neusum"
-
 def bertext_predict(text):
 
     if use_gpu == True:
@@ -74,8 +67,6 @@ def bertext_predict(text):
 
     return prediction
 
-def ptrnet_predict(text):
-    return "ptrnet"
 
 def bertabs_predict(text):
 
@@ -90,20 +81,6 @@ def bertabs_predict(text):
 
 
 app=Flask(__name__,static_folder='assets',)
-
-
-@app.route('/neusum', methods=['POST'])
-def nspredict():
-    if request.method == 'POST':
-        plaintext = request.get_json()['text']
-        try:
-            summary= neusum_predict(plaintext)
-            return jsonify({'status_code': 1, 'summary_content': summary})
-
-        except TimeoutError as err:
-            print(err)
-            return jsonify({'status_code':-1})
-
 
 @app.route('/bertext', methods=['POST'])
 def bepredict():
@@ -121,20 +98,6 @@ def bepredict():
         except TimeoutError as err:
             print(err)
             return jsonify({'status_code':-1})
-
-@app.route('/ptrnet', methods=['POST'])
-def pnpredict():
-    if request.method == 'POST':
-        plaintext = request.get_json()['text']
-        try:
-            summary= ptrnet_predict(plaintext)
-            return jsonify({'status_code': 1, 'summary_content': summary})
-
-        except TimeoutError as err:
-            print(err)
-            return jsonify({'status_code':-1})
-
-
 
 @app.route('/bertabs', methods=['POST'])
 def bapredict():
