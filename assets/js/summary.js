@@ -50,7 +50,7 @@ var app = new Vue({
             var that = this;
             console.log(that.message);
             console.log("be");
-            axios.post('http://10.10.103.47:5000/neusum',{text:that.message}).then(function(response){
+            axios.post('http://10.10.103.47:5001/neusum',{text:that.message}).then(function(response){
                 console.log(response.data);
                 if (response.data.status_code==1) {
                     // var data = JSON.stringify(response.data.summary_content);
@@ -94,7 +94,7 @@ var app = new Vue({
             var that = this;
             console.log(that.message);
             console.log("pn");
-            axios.post('http://10.10.103.47:5000/ptrnet',{text:that.message}).then(function(response){
+            axios.post('http://10.10.103.47:5002/ptrnet',{text:that.message}).then(function(response){
                 console.log(response.data);
                 if (response.data.status_code==1) {
                     // var data = JSON.stringify(response.data.summary_content);
