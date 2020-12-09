@@ -17,7 +17,7 @@ app=Flask(__name__)
 @app.route('/ptrnet', methods=['POST'])
 def pnpredict():
     if request.method == 'POST':
-        plaintext = request.get_json(force=True)['text']
+        plaintext = request.get_json()['text']
         try:
             # 待修改，如加上预处理等步骤
             batch = build_batch_by_article(plaintext, vocab)
