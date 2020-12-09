@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 from flask import render_template
-from flask_cors import CORS
 import nltk
 import torch
 import torch.nn.functional as F
@@ -81,7 +80,7 @@ def bertabs_predict(text):
 
 
 app=Flask(__name__,static_folder='assets',)
-CORS(app,supports_creadtials=True)
+
 
 @app.route('/bertext', methods=['POST'])
 def bepredict():
