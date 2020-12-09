@@ -81,7 +81,7 @@ def bertabs_predict(text):
 
 
 app=Flask(__name__,static_folder='assets',)
-CORS(app,resources=r'/*',supports_creadtials=True)
+CORS(app,supports_creadtials=True)
 
 @app.route('/bertext', methods=['POST'])
 def bepredict():

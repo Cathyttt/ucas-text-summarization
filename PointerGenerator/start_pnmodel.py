@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask import render_template
+from flask_cors import CORS
 import config
 from data import Vocab
 from predict import build_batch_by_article
@@ -11,8 +12,8 @@ beam_processor = BeamSearch(model_path, vocab) # 注意需要选词汇表进行�
 
 ## 读取模型
 
-app=Flask(__name__)
-
+app=Flask(__name__,static_folder='assets',)
+CORS(app,supports_creadtials=True)
 
 @app.route('/ptrnet', methods=['POST'])
 def pnpredict():
