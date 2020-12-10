@@ -82,7 +82,6 @@ class Example(object):
             while len(self.enc_input_extend_vocab) < max_len:
                 self.enc_input_extend_vocab.append(pad_id)
 
-
 class Batch(object):
     def __init__(self, example_list, vocab, batch_size):
         self.batch_size = batch_size

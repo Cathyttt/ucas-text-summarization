@@ -82,7 +82,7 @@ class BeamSearch(object):
         except ValueError:
             decoded_words = decoded_words
         print("decode_words:", decoded_words)
-        return " ".join(decoded_words)
+        return "".join(decoded_words)
 
 
     def beam_search(self, batch):
