@@ -37,7 +37,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-task", default='ext', type=str, choices=['ext', 'abs'])
     parser.add_argument("-encoder", default='bert', type=str, choices=['bert', 'baseline'])
-    parser.add_argument("-mode", default='train', type=str, choices=['train', 'validate', 'test','test_text', 'one_text'])
+    parser.add_argument("-mode", default='train', type=str, choices=['train', 'validate', 'test', 'lead', 'oracle','test_text', 'one_text'])
     parser.add_argument("-bert_data_path", default='../bert_data_new/cnndm')
     parser.add_argument("-model_path", default='../models/')
     parser.add_argument("-result_path", default='../results/cnndm')
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     parser.add_argument("-text_tgt_path", default='')
     parser.add_argument("-text_src", default='')
     parser.add_argument("-text_tgt", default='')
-    parser.add_argument("-cfgs_path", default='')
+    parser.add_argument("-cfgs_path", default=None)
 
     parser.add_argument("-batch_size", default=140, type=int)
     parser.add_argument("-test_batch_size", default=200, type=int)
