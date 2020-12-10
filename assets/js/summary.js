@@ -43,14 +43,14 @@ var app = new Vue({
             var that = this;
             that.message = "近日，黑龙江省双鸭山市集贤县幸福国际小区一居民家中液化气罐发生泄露起火，现场十分危急。\n" +
                 "　　消防员赶到现场发现，起火厨房内一液化气罐平躺燃烧并向外喷射火舌，已引燃周围可燃物，消防员多次尝试关闭液化气罐阀门，但因阀门损坏无法关闭，为防止火势进一步扩大，消防员不顾危险，拎起液化气罐，沿楼梯跑至一楼，在室外进行处置。与此同时，楼上消防人员对起火厨房进行灭火，约20分钟后，火灾被成功处置。\n" +
-                "　　经询问现场知情人得知，起火液化气罐是由于软管破损，在进行更换时，未将阀门关闭，造成气体泄露引燃。消防部门提醒广大群众，液化气罐发生泄露时要第一时间关闭阀门，维修要找专业人员进行，切勿自行维修。（总台央视记者 于文波 彭海龙）";
+                "　　经询问现场知情人得知，起火液化气罐是由于软管破损，在进行更换时，未将阀门关闭，造成气体泄露引燃。消防部门提醒广大群众，液化气罐发生泄露时要第一时间关闭阀门，维修要找专业人员进行，切勿自行维修.";
         },
-        nsclick:function(){
+        bsclick:function(){
             $('#json').text("");
             var that = this;
             console.log(that.message);
-            console.log("be");
-            axios.post('http://10.10.103.47:5001/neusum',{text:that.message}).then(function(response){
+            console.log("bs");
+            axios.post('http://10.10.103.47:5001/banditsum',{text:that.message}).then(function(response){
                 console.log(response.data);
                 if (response.data.status_code==1) {
                     // var data = JSON.stringify(response.data.summary_content);
@@ -89,11 +89,11 @@ var app = new Vue({
              });
         },
 
-        pnclick:function(){
+        pgclick:function(){
             $('#json').text("");
             var that = this;
             console.log(that.message);
-            console.log("pn");
+            console.log("pg");
             axios.post('http://10.10.103.47:5002/ptrnet',{text:that.message}).then(function(response){
                 console.log(response.data);
                 if (response.data.status_code==1) {
