@@ -1,4 +1,4 @@
-pytorch==1.5.1
+torch==1.5.1
 tensorflow==1.13.1
 jieba==0.42.1
 pyrouge==0.1.3
