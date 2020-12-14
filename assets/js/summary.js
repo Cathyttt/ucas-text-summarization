@@ -42,12 +42,12 @@ var app = new Vue({
         example5:function (){
             var that = this;
             that.message = "@人民日报:#马航飞机失联#【马航对“失联航班”持悲观态度】9日上午，马航没有发布失联航班的最新消息，仅是安抚家属们称，目前航班失联已超过30小时，请做好最坏的心理准备。在场许多家属听到这一消息，马上崩溃、大哭。（人民网）祈祷平安，同胞节哀！\n"},
-        bsclick:function(){
+        srnclick:function(){
             $('#json').text("");
             var that = this;
             console.log(that.message);
             console.log("bs");
-            axios.post('http://10.10.103.47:5001/banditsum',{text:that.message}).then(function(response){
+            axios.post('http://10.10.103.47:5001/summarunner',{text:that.message}).then(function(response){
                 console.log(response.data);
                 if (response.data.status_code==1) {
                     // var data = JSON.stringify(response.data.summary_content);

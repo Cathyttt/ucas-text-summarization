@@ -17,7 +17,6 @@ use_gpu = True
 be_trainer=None
 ba_predictor=None
 
-
 def load_model():
     """Load the pre-trained model, you can use your model just as easily.
     """
