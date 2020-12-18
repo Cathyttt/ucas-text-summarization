@@ -1,10 +1,14 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from main import predict
 use_gpu = True
+
 
 def summarunner_predict(text):
     # 待添加
-    return text
+    text1 = [text]
+    summary = predict(text1)
+    return summary
 
 app=Flask(__name__)
 CORS(app,supports_creadtials=True)
@@ -39,4 +43,3 @@ if __name__ == '__main__':
     app.jinja_env.auto_reload = True
 
     app.run(host="0.0.0.0",port=5001)
-
